@@ -250,3 +250,6 @@ p { margin: 0; }
 .signal svg { padding-right: 6px; }
 .links .row a { display: inline; padding: 0; border: 0; }
 .feature-shot video { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 896; background: #0E1621; }
+.sec-grid.stack { grid-template-columns: 1fr; gap: 28px; }
+.sec-grid.stack .sec-h p { max-width: 40em; }
+.feature-shot video { max-width: 100%; }
