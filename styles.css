@@ -249,3 +249,4 @@ p { margin: 0; }
 .links .row span:last-child { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
 .signal svg { padding-right: 6px; }
 .links .row a { display: inline; padding: 0; border: 0; }
+.feature-shot video { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 896; background: #0E1621; }
