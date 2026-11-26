@@ -7,6 +7,7 @@
 export const BASE = import.meta.env.BASE_URL;
 import { portrait } from './images';
 import perfectPairPoster from '../assets/perfect-pair-demo-poster.jpg';
+import perfectPairPreview from '../assets/perfect-pair-preview.mp4';
 
 /** The demo video is too big to bundle into the single-file build, so that build streams it from the live site. */
 const demoVideo = (file: string) =>
@@ -138,11 +139,16 @@ export type Project = {
   note?: string;
   palette: Palette;
   motif: 'shield' | 'flow' | 'tenants' | 'chart';
+  /** 'agentic' = Agentic AI solutions built with Claude; 'ml' = machine learning projects. */
+  kind: 'agentic' | 'ml';
+  /** Short silent clip that plays on the project card. */
+  preview?: string;
 };
 
 export const projects: Project[] = [
   {
     id: 'perfect-pair',
+    kind: 'agentic',
     title: 'Perfect Pair',
     year: '2026',
     genre: 'Agentic AI • Retail • Amazon Bedrock',
@@ -174,14 +180,35 @@ export const projects: Project[] = [
       label: 'One-minute demo of Perfect Pair',
       note: '1-minute demo with subtitles. The demo uses synthetic data created for the hackathon.',
     },
-    role: 'Returns Process & Responsible AI Lead',
-    team: 'Team Code Reapers. Developed by Joel Tomy and Jay Malhotra.',
+    preview: perfectPairPreview,
+    role: 'Sole developer: product design, agents, policy rules and the full technical build.',
+    team: 'Entered in the BSRM × ALDO Retail Gen AI Hackathon as team Code Reapers.',
     note: 'Code is in a private repository, available on request.',
     palette: { from: '#2a0610', via: '#7a0f24', to: '#0b0710', accent: '#ff3d5a' },
     motif: 'flow',
   },
   {
+    id: 'docket',
+    kind: 'agentic',
+    title: 'Docket',
+    year: '2026',
+    genre: 'Agentic AI • Scheduling • Web app',
+    logline: 'An exam scheduler for McGill’s Faculty of Law, built with Claude, that sets exam days, times and rooms from real course data.',
+    stack: ['Claude', 'JavaScript', 'HTML', 'CSS', 'Excel'],
+    build: [
+      'Built a browser app for Student Affairs staff that reads the course enrollment report, assessment parameters and constraints, then schedules exams and books rooms.',
+      'Instructors can enter their assessment details in the app itself instead of filling in Excel sheets.',
+    ],
+    features: ['Automatic exam day, time and room scheduling', 'Dashboard, heatmap and report', 'In-app form for instructors', 'Built-in offline assistant, Amicus'],
+    metrics: [
+      { value: '1 file', label: 'runs in the browser, nothing to install' },
+      { value: 'Offline', label: 'assistant built in' },
+    ],
+    palette: { from: '#04121f', via: '#0f4c6e', to: '#05080d', accent: '#4cc9ff' },
+    motif: 'tenants',
+  },  {
     id: 'pubg-cheater-detection',
+    kind: 'ml',
     title: 'Cheater Detection',
     year: '2026',
     genre: 'Deep Learning • Anomaly detection',
@@ -198,6 +225,7 @@ export const projects: Project[] = [
   },
   {
     id: 'rossmann-forecast',
+    kind: 'ml',
     title: 'Store Sales Forecasting',
     year: '2026',
     genre: 'Machine Learning • Regression',
@@ -214,6 +242,7 @@ export const projects: Project[] = [
   },
   {
     id: 'claims-cost',
+    kind: 'ml',
     title: 'Claim Cost Prediction',
     year: '2026',
     genre: 'Machine Learning • Insurance',
@@ -230,6 +259,7 @@ export const projects: Project[] = [
   },
   {
     id: 'safeplate-to',
+    kind: 'ml',
     title: 'SafePlate TO',
     year: '2026',
     genre: 'Statistical Learning • Public data',
@@ -246,6 +276,7 @@ export const projects: Project[] = [
   },
   {
     id: 'icu-step-down',
+    kind: 'ml',
     title: 'ICU Step-Down Risk',
     year: '2026',
     genre: 'Machine Learning • Healthcare',
@@ -262,6 +293,7 @@ export const projects: Project[] = [
   },
   {
     id: 'genai-case-resolution',
+    kind: 'ml',
     title: 'Gen AI Case Resolution',
     year: '2026',
     genre: 'Generative AI • Automation • Walmart',
@@ -282,6 +314,7 @@ export const projects: Project[] = [
   },
   {
     id: 'trading-agent',
+    kind: 'ml',
     title: 'Multi-Market Trading Agent',
     year: '2026',
     genre: 'Side project • LLM agents',
@@ -299,25 +332,7 @@ export const projects: Project[] = [
     palette: { from: '#120822', via: '#3d1a6e', to: '#07060c', accent: '#b98bff' },
     motif: 'chart',
   },
-  {
-    id: 'docket',
-    title: 'Docket',
-    year: '2026',
-    genre: 'Scheduling • Dashboards • Web app',
-    logline: 'An exam scheduler for McGill’s Faculty of Law that sets exam days, times and rooms from real course data.',
-    stack: ['JavaScript', 'HTML', 'CSS', 'Excel'],
-    build: [
-      'Built a browser app for Student Affairs staff that reads the course enrollment report, assessment parameters and constraints, then schedules exams and books rooms.',
-      'Instructors can enter their assessment details in the app itself instead of filling in Excel sheets.',
-    ],
-    features: ['Automatic exam day, time and room scheduling', 'Dashboard, heatmap and report', 'In-app form for instructors', 'Built-in offline assistant, Amicus'],
-    metrics: [
-      { value: '1 file', label: 'runs in the browser, nothing to install' },
-      { value: 'Offline', label: 'assistant built in' },
-    ],
-    palette: { from: '#04121f', via: '#0f4c6e', to: '#05080d', accent: '#4cc9ff' },
-    motif: 'tenants',
-  },
+
 ];
 
 export type Achievement = {
@@ -640,7 +655,7 @@ export const seasons: Season[] = [
       {
         code: 'S04 E02',
         title: 'The Hackathon',
-        description: 'Perfect Pair, built with team Code Reapers, wins the Product Fit prize at the BSRM × ALDO Retail Gen AI Hackathon.',
+        description: 'Builds Perfect Pair, an agentic returns desk, which wins the Product Fit prize at the BSRM × ALDO Retail Gen AI Hackathon.',
         tags: ['Agentic AI', 'AWS', 'Product Fit'],
         runtime: 'Oct 2026',
         palette: amber,
@@ -719,8 +734,8 @@ export const introSlides: IntroSlide[] = [
   },
   {
     kicker: 'Projects',
-    title: `${projects.length} Originals`,
-    lines: ['Perfect Pair: agentic AI for retail returns', 'Cheater Detection: deep learning on PUBG match data', 'Store Sales Forecasting · Claim Cost Prediction · SafePlate TO · ICU Step-Down Risk'],
+    title: `${projects.length} Projects`,
+    lines: ['Perfect Pair and Docket: agentic AI built with Claude', 'Cheater Detection: deep learning on PUBG match data', 'Store Sales Forecasting · Claim Cost Prediction · SafePlate TO · ICU Step-Down Risk'],
   },
   {
     kicker: 'Achievements',
@@ -740,7 +755,7 @@ export const introSlides: IntroSlide[] = [
 ];
 
 export type ProfileId = 'joel' | 'recruiter' | 'developer' | 'creative';
-export type SectionId = 'about' | 'journey' | 'originals' | 'picks' | 'skills' | 'moments' | 'story';
+export type SectionId = 'about' | 'journey' | 'originals' | 'models' | 'picks' | 'skills' | 'moments' | 'story';
 
 export const viewerProfiles: {
   id: ProfileId;
@@ -754,35 +769,36 @@ export const viewerProfiles: {
     name: 'Joel',
     blurb: 'The full series, in order',
     color: '#e5132b',
-    order: ['about', 'journey', 'originals', 'picks', 'skills', 'moments', 'story'],
+    order: ['about', 'originals', 'models', 'journey', 'picks', 'skills', 'moments', 'story'],
   },
   {
     id: 'recruiter',
     name: 'Recruiter',
     blurb: 'Resume, achievements & skills first',
     color: '#4cc9ff',
-    order: ['story', 'moments', 'skills', 'journey', 'originals', 'about', 'picks'],
+    order: ['story', 'originals', 'models', 'skills', 'moments', 'journey', 'about', 'picks'],
   },
   {
     id: 'developer',
     name: 'Builder',
     blurb: 'Projects & tools first',
     color: '#46e3a8',
-    order: ['originals', 'skills', 'journey', 'moments', 'about', 'picks', 'story'],
+    order: ['originals', 'models', 'skills', 'journey', 'moments', 'about', 'picks', 'story'],
   },
   {
     id: 'creative',
     name: 'Story',
     blurb: 'The story arc & highlights first',
     color: '#ffb547',
-    order: ['journey', 'picks', 'originals', 'moments', 'about', 'skills', 'story'],
+    order: ['journey', 'originals', 'models', 'picks', 'moments', 'about', 'skills', 'story'],
   },
 ];
 
 export const sectionMeta: Record<SectionId, { nav: string; card: string; meta: string; palette: Palette }> = {
   about: { nav: 'About', card: 'About Me', meta: 'The Pilot • Who I am', palette: violet },
   journey: { nav: 'Journey', card: 'My Journey', meta: `${seasons.length} Seasons • ${seasons.reduce((n, s) => n + s.episodes.length, 0)} Episodes`, palette: amber },
-  originals: { nav: 'Originals', card: 'My Projects', meta: `${projects.length} Originals • 2026`, palette: crimson },
+  originals: { nav: 'Agentic AI', card: 'Agentic AI', meta: `${projects.filter((p) => p.kind === 'agentic').length} solutions • Built with Claude`, palette: crimson },
+  models: { nav: 'ML Projects', card: 'ML Projects', meta: `${projects.filter((p) => p.kind === 'ml').length} projects • Models & data`, palette: ocean },
   picks: { nav: 'Top Picks', card: 'Top Picks', meta: 'Top 10 highlights', palette: jade },
   skills: { nav: 'Skills', card: 'My Skills', meta: `${skillCategories.length} Categories`, palette: ocean },
   moments: { nav: 'Moments', card: 'My Achievements', meta: `${achievements.length} Moments • ${certifications.length} Certifications`, palette: crimson },

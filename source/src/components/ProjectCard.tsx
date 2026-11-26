@@ -1,9 +1,11 @@
+import { useReducedMotionPref } from '../hooks/useMedia';
 import { motion } from 'framer-motion';
 import type { Project } from '../data/portfolio';
 import { EASE, Tilt } from './fx';
 import { ProjectArt } from './Poster';
 
 export default function ProjectCard({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) {
+  const reduced = useReducedMotionPref();
   return (
     <motion.article
       className="w-[84vw] shrink-0 snap-start sm:w-[62vw] lg:w-[46vw] xl:w-[42vw]"
@@ -30,12 +32,31 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
           <motion.div layoutId={`art-${project.id}`} className="absolute inset-0 overflow-hidden rounded-2xl">
             <div className="absolute inset-0 transition-transform duration-[1.4s] ease-[var(--ease-cine)] group-hover:scale-[1.07]">
               <ProjectArt project={project} />
+              {project.preview && (
+                // Silent looping preview of the demo; the full video with sound is on the project page.
+                <>
+                  <video
+                    src={project.preview}
+                    autoPlay={!reduced}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-[70%] w-full object-cover object-top opacity-80"
+                  />
+                  <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,7,10,0.97)_38%,rgba(7,7,10,0.75)_58%,rgba(7,7,10,0.1)_82%)]" />
+                  <span className="absolute right-5 top-16 rounded-full bg-black/60 sm:right-7 sm:top-[4.75rem] px-2.5 py-1 text-[10px] font-bold tracking-[0.2em] text-bone backdrop-blur">
+                    ▶ DEMO
+                  </span>
+                </>
+              )}
             </div>
           </motion.div>
 
-          <div className="absolute left-5 top-5 flex items-center gap-2 sm:left-7 sm:top-7">
+          <div className="absolute left-5 top-5 z-[1] flex items-center gap-2 rounded-full bg-black/40 px-2.5 py-1 backdrop-blur sm:left-7 sm:top-7">
             <span className="font-display text-xl leading-none text-crimson-2">J</span>
-            <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">ORIGINAL</span>
+            <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{project.kind === 'agentic' ? 'AGENTIC AI' : 'ML PROJECT'}</span>
           </div>
           <span className="absolute right-5 top-5 rounded border border-white/30 px-1.5 py-px text-[10px] font-bold text-bone sm:right-7 sm:top-7">{project.year}</span>
 

@@ -9,21 +9,40 @@ import ProjectCard from './ProjectCard';
  * ORIGINALS — on desktop the section pins and scrolls sideways like a title sequence.
  * On touch / small screens / reduced motion it becomes a native swipe rail.
  */
-export default function Originals({ onOpen }: { onOpen: (p: Project) => void }) {
+type Kind = Project['kind'];
+type Props = { onOpen: (p: Project) => void; kind: Kind };
+
+const COPY: Record<Kind, { kicker: string; title: string; blurb: string }> = {
+  agentic: {
+    kicker: 'Built with Claude',
+    title: 'AGENTIC AI',
+    blurb: 'AI systems that reason, use tools and act, built with Claude. Open a title for the full story and the demo.',
+  },
+  ml: {
+    kicker: 'Machine learning',
+    title: 'ML PROJECTS',
+    blurb: 'Deep learning, forecasting and risk models from the McGill MMA, hackathons and work.',
+  },
+};
+
+export default function Originals({ onOpen, kind }: Props) {
   const desktop = useDesktop();
   const reduced = useReducedMotionPref();
-  return desktop && !reduced ? <PinnedOriginals onOpen={onOpen} /> : <RailOriginals onOpen={onOpen} />;
+  // The agentic showcase pins and scrolls sideways; other rows are a plain swipe rail.
+  return desktop && !reduced && kind === 'agentic' ? <PinnedOriginals onOpen={onOpen} kind={kind} /> : <RailOriginals onOpen={onOpen} kind={kind} />;
 }
 
-function Intro() {
+function Intro({ kind }: { kind: Kind }) {
+  const items = projects.filter((p) => p.kind === kind);
+  const c = COPY[kind];
   return (
     <div className="flex w-full shrink-0 flex-col justify-center lg:w-[34vw]">
       <p className="mb-3 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-crimson-2">
-        <span className="h-px w-8 bg-crimson-2" /> {projects.length} Originals · {projects[0].year}
+        <span className="h-px w-8 bg-crimson-2" /> {c.kicker} · {items.length} {items.length === 1 ? 'project' : 'projects'}
       </p>
-      <RevealText as="h2" text="ORIGINALS" className="font-display text-[clamp(3.5rem,9vw,8rem)] leading-[0.85] text-bone" />
+      <RevealText as="h2" text={c.title} className="font-display text-[clamp(3rem,6.2vw,6.2rem)] leading-[0.88] text-bone" />
       <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-mist">
-        Agentic AI, deep learning, forecasting and risk models, plus the tools I build along the way. Open any title for the full story.
+        {c.blurb}
       </p>
       <p className="mt-6 hidden text-xs tracking-[0.24em] text-smoke lg:block">SCROLL TO BROWSE →</p>
     </div>
@@ -46,7 +65,8 @@ function Outro() {
   );
 }
 
-function PinnedOriginals({ onOpen }: { onOpen: (p: Project) => void }) {
+function PinnedOriginals({ onOpen, kind }: Props) {
+  const items = projects.filter((p) => p.kind === kind);
   const wrap = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const [dist, setDist] = useState(0);
@@ -79,14 +99,14 @@ function PinnedOriginals({ onOpen }: { onOpen: (p: Project) => void }) {
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(50%_60%_at_70%_50%,rgba(229,19,43,0.10),transparent_70%)]" />
         <motion.div ref={track} style={{ x }} className="gutter relative flex items-center gap-8 pr-[12vw]" data-cursor="drag">
-          <Intro />
-          {projects.map((p, i) => (
+          <Intro kind={kind} />
+          {items.map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i} onOpen={() => onOpen(p)} />
           ))}
-          <Outro />
+          {kind === 'ml' && <Outro />}
         </motion.div>
         <div className="gutter absolute inset-x-0 bottom-8 flex items-center gap-4">
-          <span className="text-[10px] font-bold tracking-[0.3em] text-smoke">ORIGINALS</span>
+          <span className="text-[10px] font-bold tracking-[0.3em] text-smoke">{COPY[kind].title}</span>
           <div className="h-[2px] flex-1 overflow-hidden rounded bg-white/10">
             <motion.div className="h-full origin-left bg-crimson" style={{ scaleX: bar }} />
           </div>
@@ -96,11 +116,12 @@ function PinnedOriginals({ onOpen }: { onOpen: (p: Project) => void }) {
   );
 }
 
-function RailOriginals({ onOpen }: { onOpen: (p: Project) => void }) {
+function RailOriginals({ onOpen, kind }: Props) {
+  const items = projects.filter((p) => p.kind === kind);
   return (
     <div className="py-6">
       <div className="gutter mb-6">
-        <Intro />
+        <Intro kind={kind} />
       </div>
       <motion.div
         className="rail gutter flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6"
@@ -109,10 +130,10 @@ function RailOriginals({ onOpen }: { onOpen: (p: Project) => void }) {
         viewport={{ once: true }}
         transition={{ duration: 0.9, ease: EASE }}
       >
-        {projects.map((p, i) => (
+        {items.map((p, i) => (
           <ProjectCard key={p.id} project={p} index={i} onOpen={() => onOpen(p)} />
         ))}
-        <Outro />
+        {kind === 'ml' && <Outro />}
       </motion.div>
     </div>
   );

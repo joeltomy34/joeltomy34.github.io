@@ -36,7 +36,7 @@ export default function Hero({ onPlay, onResume, profileId }: { onPlay: () => vo
   const chipY = useTransform(py, [-1, 1], [12, -12]);
   const glowX = useTransform(px, [-1, 1], ['-6%', '6%']);
 
-  const meta = ['2023 – Present', 'McGill MMA', `${projects.length} Originals`, `${achievements.length} Top Moments`];
+  const meta = ['2023 – Present', 'McGill MMA', `${projects.filter((p) => p.kind === 'agentic').length} Agentic AI builds`, `${achievements.length} Top Moments`];
 
   const floating = [
     { text: education[0].score, sub: education[0].degree.replace(' (MMA)', ''), pos: 'left-[2%] top-[30%]', depth: 1 },

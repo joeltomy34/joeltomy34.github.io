@@ -98,7 +98,8 @@ function Series() {
   const sections: Record<SectionId, ReactNode> = {
     about: <About />,
     journey: <Seasons />,
-    originals: <Originals onOpen={setProject} />,
+    originals: <Originals onOpen={setProject} kind="agentic" />,
+    models: <Originals onOpen={setProject} kind="ml" />,
     picks: <TopPicks />,
     skills: <Skills />,
     moments: <Achievements />,
@@ -122,7 +123,7 @@ function Series() {
             <Hero key={`hero-${profileId}`} onPlay={() => setPlaying(true)} onResume={() => setResumeOpen(true)} profileId={profileId} />
             <ContinueWatching order={order} />
             {order.map((id) => (
-              <Scene key={id} id={id} className={id === 'originals' ? '!py-0 sm:!py-0' : ''}>
+              <Scene key={id} id={id} className={id === 'originals' || id === 'models' ? '!py-0 sm:!py-0' : ''}>
                 {sections[id]}
               </Scene>
             ))}

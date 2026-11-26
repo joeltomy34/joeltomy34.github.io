@@ -67,7 +67,7 @@ export default function ProjectModal({ project, onClose, onSwitch }: { project: 
             </button>
             <div className="absolute inset-x-0 bottom-0 px-5 pb-6 sm:px-10">
               <motion.p className="mb-2 flex items-center gap-2 text-[11px] font-bold tracking-[0.34em] text-bone/80" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                <span className="font-display text-xl tracking-normal text-crimson-2">J</span> ORIGINAL
+                <span className="font-display text-xl tracking-normal text-crimson-2">J</span> {project.kind === 'agentic' ? 'AGENTIC AI' : 'ML PROJECT'}
               </motion.p>
               <motion.h2
                 id={`title-${project.id}-modal`}
@@ -111,7 +111,7 @@ export default function ProjectModal({ project, onClose, onSwitch }: { project: 
               <motion.dl variants={block} className="mt-8 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-3">
                 {[
                   ['My role', project.role],
-                  ['Team', project.team],
+                  ['Competition', project.team],
                   ['Code', project.note],
                 ]
                   .filter(([, v]) => v)
@@ -200,7 +200,7 @@ export default function ProjectModal({ project, onClose, onSwitch }: { project: 
 
             {/* more like this */}
             <motion.section variants={block} className="mt-14 border-t border-white/10 pt-8">
-              <h3 className="mb-4 font-sans text-lg font-semibold text-bone">More Originals</h3>
+              <h3 className="mb-4 font-sans text-lg font-semibold text-bone">More Projects</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 {more.map((p) => (
                   <button
