@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useReducedMotionPref } from '../hooks/useMedia';
 import { motion } from 'framer-motion';
 import type { Project } from '../data/portfolio';
@@ -35,18 +36,9 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
               {project.preview && (
                 // Silent looping preview of the demo; the full video with sound is on the project page.
                 <>
-                  <video
-                    src={project.preview}
-                    autoPlay={!reduced}
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-[70%] w-full object-cover object-top opacity-80"
-                  />
+                  <PreviewVideo src={project.preview} reduced={reduced} />
                   <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,7,10,0.97)_38%,rgba(7,7,10,0.75)_58%,rgba(7,7,10,0.1)_82%)]" />
-                  <span className="absolute right-5 top-16 rounded-full bg-black/60 sm:right-7 sm:top-[4.75rem] px-2.5 py-1 text-[10px] font-bold tracking-[0.2em] text-bone backdrop-blur">
+                  <span className="absolute right-5 top-16 rounded-full bg-black/75 px-2.5 py-1 text-[10px] font-bold tracking-[0.2em] text-bone sm:right-7 sm:top-[4.75rem]">
                     ▶ DEMO
                   </span>
                 </>
@@ -54,7 +46,7 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
             </div>
           </motion.div>
 
-          <div className="absolute left-5 top-5 z-[1] flex items-center gap-2 rounded-full bg-black/40 px-2.5 py-1 backdrop-blur sm:left-7 sm:top-7">
+          <div className="absolute left-5 top-5 z-[1] flex items-center gap-2 rounded-full bg-black/60 px-2.5 py-1 sm:left-7 sm:top-7">
             <span className="font-display text-xl leading-none text-crimson-2">J</span>
             <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{project.kind === 'agentic' ? 'AGENTIC AI' : 'ML PROJECT'}</span>
           </div>
@@ -68,7 +60,7 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
             <p className="mt-3 max-w-md text-sm leading-relaxed text-bone/75 sm:text-[15px]">{project.logline}</p>
             <div className="mt-4 flex flex-wrap gap-1.5">
               {project.stack.map((t) => (
-                <span key={t} className="rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-medium text-bone/90 backdrop-blur">
+                <span key={t} className="rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-medium text-bone/90">
                   {t}
                 </span>
               ))}
@@ -94,5 +86,35 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
         </div>
       </Tilt>
     </motion.article>
+  );
+}
+
+/** Silent looping demo clip. Plays only while the card is on screen, so it stays smooth and saves battery. */
+function PreviewVideo({ src, reduced }: { src: string; reduced: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || reduced) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [reduced]);
+  return (
+    <video
+      ref={ref}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden
+      className="absolute inset-x-0 top-0 h-[70%] w-full object-cover object-top opacity-85 [transform:translateZ(0)]"
+    />
   );
 }
