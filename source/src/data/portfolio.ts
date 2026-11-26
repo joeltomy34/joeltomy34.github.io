@@ -21,7 +21,7 @@ export const profile = {
   firstName: 'JOEL',
   seriesTag: 'THE SERIES',
   /** Fictional studio card shown at the very start of the opening sequence. */
-  originalLabel: 'A TOMY ORIGINAL',
+  originalLabel: 'AN AGENTIC AI PRODUCTION',
   role: 'AI / ML Engineer',
   tagline: ['Machine Learning', 'Deep Learning & NLP', 'Agentic AI'],
   intro:
@@ -138,14 +138,41 @@ export type Project = {
   team?: string;
   note?: string;
   palette: Palette;
-  motif: 'shield' | 'flow' | 'tenants' | 'chart';
-  /** 'agentic' = Agentic AI solutions built with Claude; 'ml' = machine learning projects. */
-  kind: 'agentic' | 'ml';
+  motif: 'shield' | 'flow' | 'tenants' | 'chart' | 'text';
+  /** Which section the project appears in. */
+  kind: 'capstone' | 'agentic' | 'ml' | 'nlp';
+  /** Shown on the card instead of the year, e.g. 'In progress'. */
+  status?: string;
   /** Short silent clip that plays on the project card. */
   preview?: string;
 };
 
 export const projects: Project[] = [
+  {
+    id: 'atkinsrealis-capstone',
+    kind: 'capstone',
+    title: 'AtkinsRéalis Capstone',
+    year: '2026 – 2027',
+    status: 'In progress',
+    genre: 'MMA Capstone • Industry partner • Applied analytics',
+    logline: 'An applied analytics project with industry partner AtkinsRéalis, from problem definition to a deployable result.',
+    stack: ['Python', 'SQL', 'Machine Learning', 'Solution architecture'],
+    build: [
+      'The capstone of the McGill Master of Management Analytics: a sustained project with AtkinsRéalis as the industry partner.',
+      'Joel leads the four-person team as team lead and solutions architect, alongside a data engineer, a modeler and a UI/UX lead.',
+    ],
+    features: ['Problem definition with the industry partner', 'Data engineering on the partner’s datasets', 'Modelling and a user-facing interface', 'Delivery in August 2027'],
+    metrics: [
+      { value: 'Lead', label: 'team lead & solutions architect' },
+      { value: '4', label: 'person team' },
+      { value: '2027', label: 'final delivery, August' },
+    ],
+    role: 'Team lead & solutions architect',
+    team: 'McGill MMA capstone with AtkinsRéalis.',
+    note: 'Client work; details shared once the project is complete.',
+    palette: { from: '#04121f', via: '#0f4c6e', to: '#05080d', accent: '#4cc9ff' },
+    motif: 'tenants',
+  },
   {
     id: 'perfect-pair',
     kind: 'agentic',
@@ -333,6 +360,70 @@ export const projects: Project[] = [
     motif: 'chart',
   },
 
+  {
+    id: 'web-scraping-apis',
+    kind: 'nlp',
+    title: 'Web Scraping & API Data',
+    year: '2026',
+    genre: 'Text Analytics • Data collection',
+    logline: 'Collecting text data from the web: scraping pages with BeautifulSoup and pulling data from REST APIs into analysis-ready tables.',
+    stack: ['Python', 'BeautifulSoup', 'REST APIs', 'pandas'],
+    build: [
+      'Module 1 of INSY 669 Text Analytics at McGill: text mining foundations, web scraping and API data collection.',
+      'Worked with scraped Yelp reviews and the Open-Meteo API to build datasets for text analysis.',
+    ],
+    features: ['HTML parsing with BeautifulSoup', 'API calls and JSON to DataFrame', 'Scraped review data for text mining'],
+    metrics: [{ value: 'Module 1', label: 'INSY 669 Text Analytics' }],
+    note: 'Coursework. A rebuilt version on a new use case is coming to GitHub.',
+    palette: { from: '#03150f', via: '#0d5a40', to: '#050a08', accent: '#46e3a8' },
+    motif: 'text',
+  },
+  {
+    id: 'text-module-cases',
+    kind: 'nlp',
+    title: 'Text Mining Cases',
+    year: '2026',
+    genre: 'Text Analytics • NLP',
+    logline: 'Module case studies applying text mining and NLP to real business text.',
+    stack: ['Python', 'NLTK', 'spaCy', 'Hugging Face'],
+    build: ['Case assignments from INSY 669 Text Analytics, applying NLP methods to business questions.'],
+    features: ['Text preprocessing and feature extraction', 'NLP models on business text'],
+    metrics: [{ value: 'NLP', label: 'INSY 669 module cases' }],
+    note: 'Coursework. Rebuilt versions on new use cases are coming to GitHub.',
+    palette: { from: '#120822', via: '#3d1a6e', to: '#07060c', accent: '#b98bff' },
+    motif: 'text',
+  },
+  {
+    id: 'chatbot-lab',
+    kind: 'nlp',
+    title: 'LLM Chatbot',
+    year: '2026',
+    genre: 'Text Analytics • LLMs',
+    logline: 'A chatbot built in the INSY 669 Text Analytics lab using large language models.',
+    stack: ['Python', 'LLM APIs'],
+    build: ['Built in the Text Analytics chatbot lab at McGill.'],
+    features: ['Conversational interface over an LLM'],
+    metrics: [{ value: 'Lab', label: 'INSY 669 chatbot lab' }],
+    note: 'Coursework. A rebuilt version on a new use case is coming to GitHub.',
+    palette: { from: '#24060b', via: '#6e0d1d', to: '#09070a', accent: '#ff3d5a' },
+    motif: 'flow',
+  },
+  {
+    id: 'text-group-project',
+    kind: 'nlp',
+    title: 'Text Analytics Group Project',
+    year: '2026',
+    status: 'In progress',
+    genre: 'Text Analytics • Team project',
+    logline: 'The INSY 669 group project, applying text analytics end to end to a real dataset.',
+    stack: ['Python', 'NLP'],
+    build: ['Team project for INSY 669 Text Analytics at McGill, in progress.'],
+    features: ['End-to-end text analytics on a real dataset'],
+    metrics: [{ value: 'Team', label: 'INSY 669 group project' }],
+    note: 'In progress.',
+    palette: { from: '#1a0d02', via: '#8a4a07', to: '#0a0806', accent: '#ffb547' },
+    motif: 'text',
+  },
 ];
 
 export type Achievement = {
@@ -755,7 +846,7 @@ export const introSlides: IntroSlide[] = [
 ];
 
 export type ProfileId = 'joel' | 'recruiter' | 'developer' | 'creative';
-export type SectionId = 'about' | 'journey' | 'originals' | 'models' | 'picks' | 'skills' | 'moments' | 'story';
+export type SectionId = 'about' | 'journey' | 'capstone' | 'originals' | 'models' | 'text' | 'picks' | 'skills' | 'moments' | 'story';
 
 export const viewerProfiles: {
   id: ProfileId;
@@ -769,28 +860,28 @@ export const viewerProfiles: {
     name: 'Joel',
     blurb: 'The full series, in order',
     color: '#e5132b',
-    order: ['about', 'originals', 'models', 'journey', 'picks', 'skills', 'moments', 'story'],
+    order: ['about', 'capstone', 'originals', 'models', 'text', 'journey', 'picks', 'skills', 'moments', 'story'],
   },
   {
     id: 'recruiter',
     name: 'Recruiter',
     blurb: 'Resume, achievements & skills first',
     color: '#4cc9ff',
-    order: ['story', 'originals', 'models', 'skills', 'moments', 'journey', 'about', 'picks'],
+    order: ['story', 'capstone', 'originals', 'models', 'text', 'skills', 'moments', 'journey', 'about', 'picks'],
   },
   {
     id: 'developer',
     name: 'Builder',
     blurb: 'Projects & tools first',
     color: '#46e3a8',
-    order: ['originals', 'models', 'skills', 'journey', 'moments', 'about', 'picks', 'story'],
+    order: ['originals', 'capstone', 'models', 'text', 'skills', 'journey', 'moments', 'about', 'picks', 'story'],
   },
   {
     id: 'creative',
     name: 'Story',
     blurb: 'The story arc & highlights first',
     color: '#ffb547',
-    order: ['journey', 'originals', 'models', 'picks', 'moments', 'about', 'skills', 'story'],
+    order: ['journey', 'capstone', 'originals', 'models', 'text', 'picks', 'moments', 'about', 'skills', 'story'],
   },
 ];
 
@@ -798,6 +889,8 @@ export const sectionMeta: Record<SectionId, { nav: string; card: string; meta: s
   about: { nav: 'About', card: 'About Me', meta: 'The Pilot • Who I am', palette: violet },
   journey: { nav: 'Journey', card: 'My Journey', meta: `${seasons.length} Seasons • ${seasons.reduce((n, s) => n + s.episodes.length, 0)} Episodes`, palette: amber },
   originals: { nav: 'Agentic AI', card: 'Agentic AI', meta: `${projects.filter((p) => p.kind === 'agentic').length} solutions • Built with Claude`, palette: crimson },
+  capstone: { nav: 'Capstone', card: 'Capstone', meta: 'AtkinsRéalis • Team lead', palette: ocean },
+  text: { nav: 'Text Analytics', card: 'Text Analytics', meta: `${projects.filter((p) => p.kind === 'nlp').length} projects • INSY 669`, palette: jade },
   models: { nav: 'ML Projects', card: 'ML Projects', meta: `${projects.filter((p) => p.kind === 'ml').length} projects • Models & data`, palette: ocean },
   picks: { nav: 'Top Picks', card: 'Top Picks', meta: 'Top 10 highlights', palette: jade },
   skills: { nav: 'Skills', card: 'My Skills', meta: `${skillCategories.length} Categories`, palette: ocean },

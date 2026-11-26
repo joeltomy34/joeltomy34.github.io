@@ -5,8 +5,8 @@ import { EASE, SectionHeading, Tilt } from './fx';
 export default function About() {
   const facts = [
     { k: 'Now studying', v: education[0].degree, s: `${education[0].school} · ${education[0].score}` },
+    { k: 'Now leading', v: 'AtkinsRéalis capstone', s: 'Team lead & solutions architect' },
     { k: 'Now working', v: 'Exam Systems Assistant', s: experience[0].company },
-    { k: 'Before that', v: 'Walmart Global Tech', s: 'People Services, Nov 2023 – Jun 2026' },
     { k: 'Based in', v: profile.location, s: 'Originally from India' },
   ];
 

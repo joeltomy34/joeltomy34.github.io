@@ -73,6 +73,17 @@ export function ProjectArt({ project, className = '' }: { project: Project; clas
             <circle cx="300" cy="160" r="9" fill={a} fillOpacity="0.85" stroke="none" />
           </g>
         )}
+        {project.motif === 'text' && (
+          <g fill={a} stroke="none">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <rect key={i} x={196} y={62 + i * 26} width={[150, 120, 165, 95, 140, 110][i]} height="9" rx="4.5" fillOpacity={0.22 + (i % 3) * 0.12} />
+            ))}
+            <rect x={196 + 48} y={62 + 26} width="56" height="9" rx="4.5" fillOpacity="0.9" />
+            <rect x={196 + 20} y={62 + 3 * 26} width="44" height="9" rx="4.5" fillOpacity="0.9" />
+            <circle cx="350" cy="214" r="16" fill="none" stroke={a} strokeWidth="2" />
+            <path d="M362 226 l14 14" stroke={a} strokeWidth="3" strokeLinecap="round" />
+          </g>
+        )}
         {project.motif === 'tenants' && (
           <g fill="none" stroke={a}>
             {[0, 1, 2].map((r) =>

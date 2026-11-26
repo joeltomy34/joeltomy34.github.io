@@ -67,7 +67,7 @@ export default function ProjectModal({ project, onClose, onSwitch }: { project: 
             </button>
             <div className="absolute inset-x-0 bottom-0 px-5 pb-6 sm:px-10">
               <motion.p className="mb-2 flex items-center gap-2 text-[11px] font-bold tracking-[0.34em] text-bone/80" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                <span className="font-display text-xl tracking-normal text-crimson-2">J</span> {project.kind === 'agentic' ? 'AGENTIC AI' : 'ML PROJECT'}
+                <span className="font-display text-xl tracking-normal text-crimson-2">J</span> {{ agentic: 'AGENTIC AI', ml: 'ML PROJECT', nlp: 'TEXT ANALYTICS', capstone: 'CAPSTONE' }[project.kind]}
               </motion.p>
               <motion.h2
                 id={`title-${project.id}-modal`}
@@ -112,7 +112,7 @@ export default function ProjectModal({ project, onClose, onSwitch }: { project: 
                 {[
                   ['My role', project.role],
                   ['Competition', project.team],
-                  ['Code', project.note],
+                  ['Notes', project.note],
                 ]
                   .filter(([, v]) => v)
                   .map(([k, v]) => (

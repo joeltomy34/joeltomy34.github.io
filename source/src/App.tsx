@@ -27,16 +27,6 @@ const ResumeModal = lazy(() => import('./components/ResumeModal'));
 
 type Stage = 'opening' | 'profiles' | 'home';
 
-const STORAGE_KEY = 'joel-series-profile';
-
-function readStoredProfile(): ProfileId | null {
-  try {
-    const v = sessionStorage.getItem(STORAGE_KEY);
-    return viewerProfiles.some((p) => p.id === v) ? (v as ProfileId) : null;
-  } catch {
-    return null;
-  }
-}
 
 export default function App() {
   return (
@@ -47,9 +37,9 @@ export default function App() {
 }
 
 function Series() {
-  const stored = readStoredProfile();
-  const [stage, setStage] = useState<Stage>(stored ? 'home' : 'opening');
-  const [profileId, setProfileId] = useState<ProfileId>(stored ?? 'joel');
+  // Every visit starts with the opening and the profile picker, so the swarm build plays each time.
+  const [stage, setStage] = useState<Stage>('opening');
+  const [profileId, setProfileId] = useState<ProfileId>('joel');
   const [playing, setPlaying] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -68,11 +58,6 @@ function Series() {
   const pickProfile = useCallback(
     (id: ProfileId) => {
       setProfileId(id);
-      try {
-        sessionStorage.setItem(STORAGE_KEY, id);
-      } catch {
-        /* storage unavailable — profile simply won't persist */
-      }
       if (stage !== 'home') {
         window.scrollTo(0, 0);
         setStage('home');
@@ -100,6 +85,8 @@ function Series() {
     journey: <Seasons />,
     originals: <Originals onOpen={setProject} kind="agentic" />,
     models: <Originals onOpen={setProject} kind="ml" />,
+    capstone: <Originals onOpen={setProject} kind="capstone" />,
+    text: <Originals onOpen={setProject} kind="nlp" />,
     picks: <TopPicks />,
     skills: <Skills />,
     moments: <Achievements />,
@@ -123,7 +110,7 @@ function Series() {
             <Hero key={`hero-${profileId}`} onPlay={() => setPlaying(true)} onResume={() => setResumeOpen(true)} profileId={profileId} />
             <ContinueWatching order={order} />
             {order.map((id) => (
-              <Scene key={id} id={id} className={id === 'originals' || id === 'models' ? '!py-0 sm:!py-0' : ''}>
+              <Scene key={id} id={id} className={['originals', 'models', 'capstone', 'text'].includes(id) ? '!py-0 sm:!py-0' : ''}>
                 {sections[id]}
               </Scene>
             ))}

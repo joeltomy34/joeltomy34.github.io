@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  * (from github.com/TejasLamba2006/swarm-page-builder, based on Joel Califa's
  * Swarm and DhvanilPatel/swarm-cursors).
  *
- * It runs once per browser session, after the home screen has finished its entrance.
+ * It runs every time the home screen appears (each visit, and after Replay opening).
  */
 
 type SwarmApi = { start: () => void; restart: () => void; abort: () => void };
@@ -18,7 +18,6 @@ declare global {
   }
 }
 
-const BUILT_KEY = 'portfolio-built-paths-v1';
 /** Wait for the hero's entrance animation to settle before the page is measured. */
 const SETTLE_MS = 2200;
 /** How many screens of the page the swarm builds before handing over to the real page.
@@ -61,20 +60,12 @@ function loadEngine(): Promise<SwarmApi | null> {
   return loading;
 }
 
-function alreadyBuilt() {
-  try {
-    const v = JSON.parse(sessionStorage.getItem(BUILT_KEY) || '[]');
-    return Array.isArray(v) && v.includes(location.pathname);
-  } catch {
-    return false;
-  }
-}
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function useSwarmBuild(active: boolean) {
   useEffect(() => {
-    if (!active || reducedMotion() || alreadyBuilt()) return;
+    if (!active || reducedMotion()) return;
     const html = document.documentElement;
     html.setAttribute('data-swarm-init', 'true'); // cover the page while it settles
     window.__swarmModels = CURSORS;

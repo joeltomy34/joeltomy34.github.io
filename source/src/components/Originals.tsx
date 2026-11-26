@@ -18,6 +18,16 @@ const COPY: Record<Kind, { kicker: string; title: string; blurb: string }> = {
     title: 'AGENTIC AI',
     blurb: 'AI systems that reason, use tools and act, built with Claude. Open a title for the full story and the demo.',
   },
+  capstone: {
+    kicker: 'McGill MMA',
+    title: 'CAPSTONE',
+    blurb: 'My MMA capstone with industry partner AtkinsRéalis, where I lead the team as team lead and solutions architect.',
+  },
+  nlp: {
+    kicker: 'INSY 669',
+    title: 'TEXT ANALYTICS',
+    blurb: 'Scraping, APIs, NLP and LLMs from the Text Analytics course, being rebuilt on new use cases.',
+  },
   ml: {
     kicker: 'Machine learning',
     title: 'ML PROJECTS',
@@ -44,7 +54,7 @@ function Intro({ kind }: { kind: Kind }) {
       <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-mist">
         {c.blurb}
       </p>
-      <p className="mt-6 hidden text-xs tracking-[0.24em] text-smoke lg:block">SCROLL TO BROWSE →</p>
+      {items.length > 2 && <p className="mt-6 hidden text-xs tracking-[0.24em] text-smoke lg:block">SCROLL TO BROWSE →</p>}
     </div>
   );
 }

@@ -17,4 +17,3 @@ npm run publish:site   # rebuild and copy the site to the top of the repo
 
 Then commit and push. All the content (jobs, projects, skills) is in `source/src/data/portfolio.ts`.
 
-Design based on Sushmita Dasari's Portfolio Series. Build animation from swarm-page-builder.

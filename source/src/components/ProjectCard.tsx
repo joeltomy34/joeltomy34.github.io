@@ -48,9 +48,9 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
 
           <div className="absolute left-5 top-5 z-[1] flex items-center gap-2 rounded-full bg-black/60 px-2.5 py-1 sm:left-7 sm:top-7">
             <span className="font-display text-xl leading-none text-crimson-2">J</span>
-            <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{project.kind === 'agentic' ? 'AGENTIC AI' : 'ML PROJECT'}</span>
+            <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{{ agentic: 'AGENTIC AI', ml: 'ML PROJECT', nlp: 'TEXT ANALYTICS', capstone: 'CAPSTONE' }[project.kind]}</span>
           </div>
-          <span className="absolute right-5 top-5 rounded border border-white/30 px-1.5 py-px text-[10px] font-bold text-bone sm:right-7 sm:top-7">{project.year}</span>
+          <span className="absolute right-5 top-5 rounded border border-white/30 px-1.5 py-px text-[10px] font-bold text-bone sm:right-7 sm:top-7">{project.status ?? project.year}</span>
 
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 [transform:translateZ(40px)]">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-mist">{project.genre}</p>
