@@ -170,3 +170,23 @@ html[data-swarm-building='true'] main > :not(#top)[style*='opacity: 0'] {
   filter: none !important;
 }
 html[data-swarm-building='true'] main .sticky { position: relative !important; }
+
+/* Demo reel on project cards: 5 screens x 3s = one 15s cycle. Each screen fades in over the
+   first 0.6s (4%), stays fully visible until the next one has faded in on top of it (24%),
+   then hides. No zoom: screens are shown at their original size and shape. */
+.reel-frame {
+  opacity: 0;
+  will-change: opacity;
+  animation-name: reel-fade;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes reel-fade {
+  0% { opacity: 0; z-index: 3; }
+  4% { opacity: 1; z-index: 3; }
+  4.1% { opacity: 1; z-index: 1; }
+  24% { opacity: 1; z-index: 1; }
+  24.1% { opacity: 0; z-index: 1; }
+  100% { opacity: 0; z-index: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .reel-frame { animation: none; } }

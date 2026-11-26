@@ -49,6 +49,17 @@ function Series() {
   const order = viewerProfiles.find((p) => p.id === profileId)!.order;
   useSwarmBuild(stage === 'home');
 
+  // Browsers can restore a page from their back/forward cache exactly as it was left
+  // (going back to the site, or reopening a recently closed tab). Reload it instead,
+  // so every visit starts with the opening, the profile picker and the swarm build.
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) window.location.reload();
+    };
+    window.addEventListener('pageshow', onShow);
+    return () => window.removeEventListener('pageshow', onShow);
+  }, []);
+
   useEffect(() => {
     if (stage === 'home') return;
     lock();

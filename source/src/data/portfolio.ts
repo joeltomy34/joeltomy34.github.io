@@ -7,7 +7,17 @@
 export const BASE = import.meta.env.BASE_URL;
 import { portrait } from './images';
 import perfectPairPoster from '../assets/perfect-pair-demo-poster.jpg';
-import perfectPairPreview from '../assets/perfect-pair-preview.mp4';
+import pp0 from '../assets/reel/pp-0.webp';
+import pp1 from '../assets/reel/pp-1.webp';
+import pp2 from '../assets/reel/pp-2.webp';
+import pp3 from '../assets/reel/pp-3.webp';
+import pp4 from '../assets/reel/pp-4.webp';
+import dk0 from '../assets/reel/dk-0.webp';
+import dk1 from '../assets/reel/dk-1.webp';
+import dk2 from '../assets/reel/dk-2.webp';
+import dk3 from '../assets/reel/dk-3.webp';
+import dk4 from '../assets/reel/dk-4.webp';
+import docketPoster from '../assets/docket-demo-poster.jpg';
 
 /** The demo video is too big to bundle into the single-file build, so that build streams it from the live site. */
 const demoVideo = (file: string) =>
@@ -21,7 +31,7 @@ export const profile = {
   firstName: 'JOEL',
   seriesTag: 'THE SERIES',
   /** Fictional studio card shown at the very start of the opening sequence. */
-  originalLabel: 'AN AGENTIC AI PRODUCTION',
+  originalLabel: 'A JOEL TOMY PRODUCTION',
   role: 'AI / ML Engineer',
   tagline: ['Machine Learning', 'Deep Learning & NLP', 'Agentic AI'],
   intro:
@@ -143,8 +153,8 @@ export type Project = {
   kind: 'capstone' | 'agentic' | 'ml' | 'nlp';
   /** Shown on the card instead of the year, e.g. 'In progress'. */
   status?: string;
-  /** Short silent clip that plays on the project card. */
-  preview?: string;
+  /** Key screens that crossfade on the project card, shown at their original size (1440×760). */
+  reel?: { src: string }[];
 };
 
 export const projects: Project[] = [
@@ -207,7 +217,13 @@ export const projects: Project[] = [
       label: 'One-minute demo of Perfect Pair',
       note: '1-minute demo with subtitles. The demo uses synthetic data created for the hackathon.',
     },
-    preview: perfectPairPreview,
+    reel: [
+      { src: pp0 },
+      { src: pp1 },
+      { src: pp2 },
+      { src: pp3 },
+      { src: pp4 },
+    ],
     role: 'Sole developer: product design, agents, policy rules and the full technical build.',
     team: 'Entered in the BSRM × ALDO Retail Gen AI Hackathon as team Code Reapers.',
     note: 'Code is in a private repository, available on request.',
@@ -228,9 +244,26 @@ export const projects: Project[] = [
     ],
     features: ['Automatic exam day, time and room scheduling', 'Dashboard, heatmap and report', 'In-app form for instructors', 'Built-in offline assistant, Amicus'],
     metrics: [
+      { value: '0', label: 'official conflicts in the demo schedule' },
+      { value: '320', label: 'students checked (synthetic demo)' },
       { value: '1 file', label: 'runs in the browser, nothing to install' },
       { value: 'Offline', label: 'assistant built in' },
     ],
+    reel: [
+      { src: dk0 },
+      { src: dk1 },
+      { src: dk2 },
+      { src: dk3 },
+      { src: dk4 },
+    ],
+    demo: {
+      src: demoVideo('docket-demo.mp4'),
+      poster: docketPoster,
+      label: 'Demo of Docket scheduling exams from synthetic data',
+      note: 'Narrated walkthrough, under a minute. All courses, instructors, students and rooms in this demo are synthetic.',
+    },
+    role: 'Designed and built with Claude for the Faculty of Law Student Affairs Office.',
+    note: 'An internal Faculty of Law tool, so the code is private. The demo runs the real app on synthetic data.',
     palette: { from: '#04121f', via: '#0f4c6e', to: '#05080d', accent: '#4cc9ff' },
     motif: 'tenants',
   },  {

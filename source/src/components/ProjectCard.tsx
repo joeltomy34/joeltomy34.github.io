@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { useReducedMotionPref } from '../hooks/useMedia';
 import { motion } from 'framer-motion';
 import type { Project } from '../data/portfolio';
@@ -28,31 +27,38 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
             }
           }}
           aria-label={`Open ${project.title}`}
-          className="focus-ring relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-white/10 transition duration-500 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] group-hover:ring-white/25 sm:aspect-[16/12] lg:aspect-auto lg:h-[66vh]"
+          className={`focus-ring relative overflow-hidden rounded-2xl ring-1 ring-white/10 transition duration-500 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] group-hover:ring-white/25 ${
+            project.reel ? 'flex flex-col' : 'aspect-[4/5] sm:aspect-[16/12] lg:aspect-auto lg:h-[66vh]'
+          }`}
         >
           <motion.div layoutId={`art-${project.id}`} className="absolute inset-0 overflow-hidden rounded-2xl">
             <div className="absolute inset-0 transition-transform duration-[1.4s] ease-[var(--ease-cine)] group-hover:scale-[1.07]">
               <ProjectArt project={project} />
-              {project.preview && (
-                // Silent looping preview of the demo; the full video with sound is on the project page.
-                <>
-                  <PreviewVideo src={project.preview} reduced={reduced} />
-                  <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,7,10,0.97)_38%,rgba(7,7,10,0.75)_58%,rgba(7,7,10,0.1)_82%)]" />
-                  <span className="absolute right-5 top-16 rounded-full bg-black/75 px-2.5 py-1 text-[10px] font-bold tracking-[0.2em] text-bone sm:right-7 sm:top-[4.75rem]">
-                    ▶ DEMO
-                  </span>
-                </>
-              )}
             </div>
           </motion.div>
 
+          {project.reel && <Reel frames={project.reel} reduced={reduced} />}
+
+          {!project.reel && (
+            <>
           <div className="absolute left-5 top-5 z-[1] flex items-center gap-2 rounded-full bg-black/60 px-2.5 py-1 sm:left-7 sm:top-7">
             <span className="font-display text-xl leading-none text-crimson-2">J</span>
             <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{{ agentic: 'AGENTIC AI', ml: 'ML PROJECT', nlp: 'TEXT ANALYTICS', capstone: 'CAPSTONE' }[project.kind]}</span>
           </div>
           <span className="absolute right-5 top-5 rounded border border-white/30 px-1.5 py-px text-[10px] font-bold text-bone sm:right-7 sm:top-7">{project.status ?? project.year}</span>
+            </>
+          )}
 
-          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 [transform:translateZ(40px)]">
+          <div className={`${project.reel ? 'relative' : 'absolute inset-x-0 bottom-0'} p-5 sm:p-7 [transform:translateZ(40px)]`}>
+            {project.reel && (
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <span className="flex items-center gap-2">
+                  <span className="font-display text-xl leading-none text-crimson-2">J</span>
+                  <span className="text-[10px] font-bold tracking-[0.34em] text-bone/80">{{ agentic: 'AGENTIC AI', ml: 'ML PROJECT', nlp: 'TEXT ANALYTICS', capstone: 'CAPSTONE' }[project.kind]}</span>
+                </span>
+                <span className="rounded border border-white/30 px-1.5 py-px text-[10px] font-bold text-bone">{project.status ?? project.year}</span>
+              </div>
+            )}
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-mist">{project.genre}</p>
             <motion.h3 layoutId={`title-${project.id}`} className="font-display text-[clamp(2.4rem,5vw,4.6rem)] leading-[0.88] tracking-wide text-bone">
               {project.title}
@@ -89,32 +95,26 @@ export default function ProjectCard({ project, index, onOpen }: { project: Proje
   );
 }
 
-/** Silent looping demo clip. Plays only while the card is on screen, so it stays smooth and saves battery. */
-function PreviewVideo({ src, reduced }: { src: string; reduced: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const v = ref.current;
-    if (!v || reduced) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) v.play().catch(() => {});
-        else v.pause();
-      },
-      { threshold: 0.25 },
-    );
-    io.observe(v);
-    return () => io.disconnect();
-  }, [reduced]);
+/**
+ * Demo reel: the project's key screens shown at their original size and shape (no zoom, no crop),
+ * crossfading one into the next. Driven by CSS only, so the loop never pauses or restarts.
+ */
+const STEP = 3; // seconds each screen is on show
+function Reel({ frames, reduced }: { frames: { src: string }[]; reduced: boolean }) {
+  const cycle = frames.length * STEP;
   return (
-    <video
-      ref={ref}
-      src={src}
-      muted
-      loop
-      playsInline
-      preload="auto"
-      aria-hidden
-      className="absolute inset-x-0 top-0 h-[70%] w-full object-cover object-top opacity-85 [transform:translateZ(0)]"
-    />
+    <div aria-hidden className="relative isolate aspect-[1440/760] w-full overflow-hidden border-b border-white/10 bg-ink">
+      {frames.map((f, i) => (
+        <img
+          key={f.src}
+          src={f.src}
+          alt=""
+          decoding="async"
+          className="reel-frame absolute inset-0 h-full w-full object-contain"
+          style={reduced ? { opacity: i === 0 ? 1 : 0 } : { animationDuration: `${cycle}s`, animationDelay: `${i * STEP - 0.6}s` }}
+        />
+      ))}
+      <span className="absolute bottom-3 right-3 z-10 rounded-full bg-black/75 px-2.5 py-1 text-[10px] font-bold tracking-[0.2em] text-bone">▶ DEMO</span>
+    </div>
   );
 }
